@@ -1,5 +1,4 @@
 // Action constructors and type checking helpers
-
 interface IAction<T extends string, P> {
     type: T;
     payload?: P;

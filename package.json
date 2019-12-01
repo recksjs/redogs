@@ -1,6 +1,6 @@
 {
   "name": "redogs",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Stream driven redux state manager",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
