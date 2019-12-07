@@ -10,7 +10,7 @@ interface ActionCreator<T extends string, P> {
 }
 
 // Constructors
-const createStandardAction = <T extends string>(type: T): <P>() => ActionCreator<typeof type, P> => {
+const createStandardAction = <T extends string>(type: T): <P=void>() => ActionCreator<typeof type, P> => {
     const ctor = (payload) => ({ type, payload });
     ctor.type = type;
     return () => ctor;
@@ -27,4 +27,5 @@ const isActionOf = <S extends string, T extends ActionCreator<S, unknown>>(actio
         actionCtors.some(ctor => ctor.type === action.type);
 }
 
+export { IAction, ActionCreator };
 export { createStandardAction, getType, isActionOf };
