@@ -26,7 +26,7 @@ interface IAction { type: string, payload?: any };
 const INIT_STORE_ACTION: IAction = { type: 'INIT_STORE' };
 
 // Reducers {{{
-interface IReducer<S> {
+interface IReducer<S = unknown> {
     (action: IAction, state: S) : S;
 }
 
@@ -66,22 +66,28 @@ const createStore = <S>(reducersRoot: IReducer<S>, effectsRoot?: IEffect<S>) => 
     }
 }
 
-type TReducersObject<S extends Object> = {
+type TReducersObject<S extends Object = unknown> = {
     [P in keyof S]: IReducer<S[P]>
 }
 
 
-const combineReducers = <S>(reducers: TReducersObject<S>, initialState?: S) => {
+const combineReducers = <S extends Object>(reducers: TReducersObject<S>, initialState?: S) => {
     const entries = Object.entries(reducers);
 
-    return (action: IAction, state = initialState) => {
+    const initialStateSafe =
+        initialState != null
+        ? initialState
+        : Object.create(null)
+        ;
+
+    return (action: IAction, state = initialStateSafe) => {
         // shallow check if store branch was updated
         let shouldUpdate = false;
 
         const newState = entries.reduce(
             // [any, any] TS hack
             (acc, [key, fn] : [any, any]) => {
-                acc[key] = fn(action, state && state[key] || void 0);
+                acc[key] = fn(action, state[key] || void 0);
                 if (acc[key] !== state[key]) {
                     shouldUpdate = true;
                 }
@@ -98,7 +104,7 @@ const combineReducers = <S>(reducers: TReducersObject<S>, initialState?: S) => {
 // }}}
 
 // Effects combiner {{{
-interface IEffect<S> {
+interface IEffect<S = unknown> {
     (actions$: Observable<IAction>, store$: Observable<S>) : Observable<IAction>;
 }
 
@@ -111,8 +117,8 @@ const combineEffects = <S>(...effects: IEffect<S>[]) : IEffect<S> => {
 }
 // }}}
 
+export { IReducer, IEffect };
 export { INIT_STORE_ACTION, createStore, combineReducers, combineEffects };
-
 
 // Helpers
 function suppressAndLogError (msgPrefix: string) {
