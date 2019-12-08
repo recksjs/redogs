@@ -1,25 +1,5 @@
-// RxJS import hack {{{
-// Due to closurejs bundling of rxjs imports (which are peer dependencies) to
-// `require(rxjs)` & `require(rxjs/operators)`. That bundling eliminates import
-// optimisation and whole rxjs is imported. Therefore internal functions and
-// operators are imported directly from rxjs internals which might not be
-// reliable through npm versions following imports were substituted
-// import { of, pipe, combineLatest, ReplaySubject, Subject, Observable } from 'rxjs';
-// import { pairwise, switchMap, tap, distinctUntilChanged, startWith, map, takeUntil } from 'rxjs/operators';
-import { Observable } from 'rxjs/internal/Observable';
-import { EMPTY } from 'rxjs/internal/observable/empty';
-import { merge } from 'rxjs/internal/observable/merge';
-import { NEVER } from 'rxjs/internal/observable/never';
-import { catchError } from 'rxjs/internal/operators/catchError';
-import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged';
-import { map } from 'rxjs/internal/operators/map';
-import { startWith } from 'rxjs/internal/operators/startWith';
-import { takeUntil } from 'rxjs/internal/operators/takeUntil';
-import { withLatestFrom } from 'rxjs/internal/operators/withLatestFrom';
-import { ReplaySubject } from 'rxjs/internal/ReplaySubject';
-import { Subject } from 'rxjs/internal/Subject';
-import { pipe } from 'rxjs/internal/util/pipe';
-// }}}
+import { EMPTY, merge, NEVER, Observable, pipe, ReplaySubject, Subject } from 'rxjs';
+import { catchError, distinctUntilChanged, map, startWith, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 interface IAction { type: string, payload?: any };
 
