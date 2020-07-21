@@ -1,4 +1,6 @@
 const path = require('path');
+const webpackRxjsExternals = require('webpack-rxjs-externals');
+
 
 module.exports = {
     entry: './src/index.ts',
@@ -31,21 +33,6 @@ module.exports = {
         extensions: ['.ts']
     },
     externals: [
-        // externalisation of rxjs
-        // copied from https://github.com/jayphelps/webpack-rxjs-externals/
-        function rxjsExternals(context, request, callback) {
-            if (request.match(/^rxjs(\/|$)/)) {
-                const parts = request.split('/');
-
-                return callback(null, {
-                    root: parts,
-                    commonjs: request,
-                    commonjs2: request,
-                    amd: request
-                });
-            }
-
-            callback();
-        }
+        webpackRxjsExternals()
     ]
 };
