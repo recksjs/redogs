@@ -1,3 +1,3 @@
-const prodConfig = require('./webpack/prod.config');
+const prodConfig = require('./configs/prod.config');
 
 module.exports = prodConfig;
